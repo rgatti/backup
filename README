@@ -1,0 +1,16 @@
+Hourly and Daily Snapshots
+
+Simple user scripts to take hourly and daily snapshots. Shamelessly used the
+tutorial from Mike Rubel (http://www.mikerubel.org/computers/rsync_snapshots/).
+
+
+Install
+
+$ git clone https://github.com/rgatti/backup.git
+$ cp backup/snapshot_*.sh $HOME/bin
+
+
+User crontab
+
+0 */4 * * * /home/rgatti/bin/snapshot_hourly.sh
+0 6-8,20-22 * * * /home/rgatti/bin/snapshot_daily.sh
