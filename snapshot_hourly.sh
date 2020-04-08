@@ -3,7 +3,7 @@
 set -eu
 
 BACKUP_ROOT=/media/rgatti/backup
-EXCLUDE=exclude.txt
+FILTER_RULES=
 
 cd $BACKUP_ROOT
 
@@ -21,14 +21,13 @@ if [ -d hourly.0 ]; then
 	mv hourly.0 hourly.1
 fi
 
-# make empty excludes file if needed
-if ! [ -f $EXCLUDE ]; then
-	touch $EXCLUDE
+if [ -f "$HOME/.backup-filter" ]; then
+	FILTER_RULES="--filter='merge $HOME/.backup-filter'"
 fi
 
 rsync -av --delete                               \
 	--delete-excluded                        \
-	--exclude-from=$BACKUP_ROOT/$EXCLUDE     \
+	$FILTER_RULES                            \
 	--link-dest=$BACKUP_ROOT/hourly.1        \
 	--log-file=$BACKUP_ROOT/hourly.log       \
 	/home/rgatti/ $BACKUP_ROOT/hourly.0
